@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exclusive Automotive</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap');
+
+        ::-webkit-scrollbar {
+            width: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-color: #000;
+            color: white;
+            scroll-behavior: smooth;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigasi */
+        .nav {
+            position: fixed;
+            width: 100%;
+            z-index: 50;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .nav-logo span {
+            color: #dc2626;
+        }
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .nav-icons .fas {
+            color: white;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .nav-icons .fas:hover {
+            color: #dc2626;
+        }
+        .nav-icons .fa-bars {
+            display: none;
+        }
+
+        /* Hero Section */
+        .hero-container {
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 1;
+        }
+        .hero-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            max-width: 42rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .hero-btn {
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition-property: background-color, border-color, color;
+            transition-duration: 0.15s;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .hero-btn-red {
+            background-color: #dc2626;
+            color: white;
+        }
+        .hero-btn-red:hover {
+            background-color: #b91c1c;
+        }
+        .hero-btn-white {
+            background-color: transparent;
+            color: white;
+            border-color: white;
+        }
+        .hero-btn-white:hover {
+            background-color: white;
+            color: black;
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+        .scroll-indicator .fas {
+            color: white;
+            font-size: 1.5rem;
+            animation: bounce 1s infinite;
+            cursor: pointer;
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(-25%);
+                animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            }
+            50% {
+                transform: none;
+                animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            }
+        }
+
+        /* Bagian Produk Terlaris dan Koleksi */
+        .section {
+            padding: 5rem 2rem;
+        }
+        .bg-black {
+            background-color: #000;
+        }
+        .bg-gradient-bottom {
+            background: linear-gradient(to bottom, #000, #111827);
+        }
+        .bg-gradient-right {
+            background: linear-gradient(to right, #000, #111827);
+        }
+        .container {
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 2rem;
+        }
+        .model-slide {
+            overflow: hidden;
+            border-radius: 0.5rem;
+            transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        .model-slide:hover {
+            transform: scale(1.03);
+            background-color: #dc2626;
+        }
+        .model-slide .relative {
+            position: relative;
+        }
+        .model-slide img {
+            width: 100%;
+        }
+        .model-slide-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(to top, black, transparent);
+        }
+        .model-slide h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .model-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        .model-details .new {
+            color: #dc2626;
+        }
+        .model-details span {
+            color: #9ca3af;
+        }
+        .btn-view-all {
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+        .btn-view-all button {
+            border: 2px solid #dc2626;
+            color: #dc2626;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.3s;
+            background-color: transparent;
+            cursor: pointer;
+        }
+        .btn-view-all button:hover {
+            background-color: #dc2626;
+            color: white;
+        }
+        
+        /* Performa Hewan Buas */
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 3rem;
+            align-items: center;
+        }
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .performance-item {
+            padding: 1.5rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .performance-item:hover {
+            border-left-color: #ff0000;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        .performance-number {
+            color: #dc2626;
+            font-size: 2.25rem;
+            font-weight: 700;
+        }
+        .performance-text {
+            color: #d1d5db;
+            margin-top: 0.5rem;
+        }
+        .specs-info p {
+            color: #d1d5db;
+            margin-bottom: 1.5rem;
+        }
+        .specs-info button {
+            border: 2px solid white;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.3s;
+            background-color: transparent;
+            cursor: pointer;
+        }
+        .specs-info button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        /* Koleksi */
+        .collection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+        .collection-header h2 {
+            font-size: 2.25rem;
+            font-weight: 700;
+        }
+        .collection-header button {
+            display: flex;
+            align-items: center;
+            color: #dc2626;
+            transition: color 0.3s;
+        }
+        .collection-header button:hover {
+            color: #ef4444;
+        }
+        .collection-header button i {
+            margin-left: 0.5rem;
+        }
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+        .hover-scale {
+            overflow: hidden;
+            border-radius: 0.5rem;
+            transition: transform 0.3s ease;
+            background-color: #d1d5db;
+        }
+        .hover-scale:hover {
+            transform: scale(1.05);
+            background-color: #dc2626;
+        }
+        .hover-scale img {
+            width: 100%;
+        }
+
+        /* Pengalaman Eksklusif */
+        .exclusive-section-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.75rem;
+        }
+        .contact {
+            padding: 60px 20px;
+            background-color: none;
+            text-align: center;
+            width: 450px;
+            margin-right: 70px;
+            margin-left: 75px;
+        }
+        .contact h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+        form#contactForm {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        form#contactForm input,
+        form#contactForm textarea {
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            color: #000;
+        }
+        form#contactForm button {
+            padding: 12px;
+            background-color: #f83131;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        form#contactForm button:hover {
+            background-color: transparent;
+            border: 1px solid #ffffff;
+        }
+        #formMessage {
+            margin-top: 15px;
+            color: #000000;
+        }
+        .exclusive-info {
+            width: 100%;
+        }
+        .exclusive-info h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .exclusive-info p {
+            color: #d1d5db;
+            margin-bottom: 1.5rem;
+        }
+        .exclusive-features {
+            margin-bottom: 2rem;
+        }
+        .exclusive-features div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .exclusive-features i {
+            color: #dc2626;
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+        }
+        .exclusive-btn-showroom {
+            background-color: #dc2626;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .exclusive-btn-showroom:hover {
+            background-color: #b91c1c;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #000;
+            padding: 3rem 2rem;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        .footer-column h4 {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .footer-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .footer-column a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-column a:hover {
+            color: white;
+        }
+        .footer-bottom {
+            border-top: 1px solid #1f2937;
+            padding-top: 2rem;
+        }
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-brand .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .footer-brand .logo span {
+            color: #dc2626;
+        }
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .social-icons a {
+            color: #9ca3af;
+            transition: color 0.3s;
+        }
+        .social-icons a:hover {
+            color: white;
+        }
+        .footer-copyright {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-top: 2rem;
+        }
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .footer-links a {
+            color: #6b7280;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+        .footer-links a:hover {
+            color: white;
+        }
+
+        /* Media Queries untuk responsif */
+        @media (min-width: 640px) {
+            .collection-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 768px) {
+            .nav-icons .fa-bars {
+                display: none;
+            }
+            .hero-title {
+                font-size: 4.5rem;
+            }
+            .hero-subtitle {
+                font-size: 1.5rem;
+            }
+            .section-title {
+                font-size: 2.25rem;
+            }
+            .product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .performance-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .collection-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+            .exclusive-section-content {
+                flex-direction: row;
+            }
+            .exclusive-info {
+                width: 50%;
+            }
+            .footer-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+            .footer-brand {
+                flex-direction: row;
+            }
+            .footer-brand .logo {
+                margin-bottom: 0;
+            }
+            .social-icons {
+                margin-bottom: 0;
+            }
+            .footer-copyright {
+                margin-top: 0;
+            }
+            .footer-links {
+                margin-top: 0;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="nav">
+        <div class="nav-logo">
+            <span>EXCLUSIVE</span> AUTOMOTIVE
+        </div>
+        <div class="nav-icons">
+            <i class="fas fa-search"></i>
+            <i class="fas fa-bars"></i>
+        </div>
+    </nav>
+
+    <div class="hero-container">
+        <video autoplay loop class="hero-video">
+            <source src="IMG_3644.MP4" type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <div>
+                <h1 class="hero-title">REVUELTO</h1>
+                <p class="hero-subtitle">V12 hybrid HPEV pertama yang ada di Indonesia dari Exclusive Automotive</p>
+                <div class="hero-buttons">
+                    <button class="hero-btn hero-btn-red">TEMUKAN</button>
+                    <button class="hero-btn hero-btn-white">BELI SEKARANG</button>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
+
+    <section class="section bg-black">
+        <div class="container">
+            <h2 class="section-title">PRODUK TERLARIS</h2>
+            <div class="product-grid">
+                <div class="model-slide">
+                    <div class="relative">
+                        <img src="revuelto.png" alt="Revuelto supercar in yellow color with aggressive angles, parked in a showroom with dramatic lighting" style="width: 100%;">
+                        <div class="model-slide-info">
+                            <h3>REVUELTO</h3>
+                            <div class="model-details">
+                                <span class="new">NEW</span>
+                                <span>IDR 22.500.000.000</span>
+                                <span>1,001 HP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-slide">
+                    <div class="relative">
+                        <img src="huracan.png" alt="Huracan supercar in matte orange with carbon fiber details, speeding on a racetrack" style="width: 100%;">
+                        <div class="model-slide-info">
+                            <h3>HURACAN</h3>
+                            <div class="model-details">
+                                <span>IDR 6.000.000.000</span>
+                                <span>640 HP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="model-slide">
+                    <div class="relative">
+                        <img src="aventador.png" alt="Urus luxury SUV in metallic grey, driving through mountainous terrain" style="width: 100%;">
+                        <div class="model-slide-info">
+                            <h3>AVENTADOR SVJ</h3>
+                            <div class="model-details">
+                                <span>IDR 22.000.000.000</span>
+                                <span>759 HP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-view-all">
+                <button>VIEW ALL MODELS</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section bg-gradient-bottom">
+        <div class="container">
+            <h2 class="section-title">PEFORMA HEWAN BUAS</h2>
+            <div class="performance-grid">
+                <div>
+                    <img src="revuelto.png" alt="Cutaway technical diagram of a V12 engine with carbon fiber components highlighted in red" style="width: 100%;">
+                </div>
+                <div class="specs-info">
+                    <div class="specs-grid">
+                        <div class="performance-item">
+                            <div class="performance-number">6.5L</div>
+                            <div class="performance-text">NATURALLY ASPIRATED V12</div>
+                        </div>
+                        <div class="performance-item">
+                            <div class="performance-number">3.0s</div>
+                            <div class="performance-text">0-100 KM/H</div>
+                        </div>
+                        <div class="performance-item">
+                            <div class="performance-number">>350</div>
+                            <div class="performance-text">TOP SPEED (KM/H)</div>
+                        </div>
+                        <div class="performance-item">
+                            <div class="performance-number">1,001</div>
+                            <div class="performance-text">TOTAL POWER (HP)</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 2rem;">
+                        <p>Revuelto adalah mobil sport hibrida plug-in pertama dari Lamborghini, menggabungkan mesin V12 bertenaga tinggi dengan tiga motor listrik.
+                            Revuelto secara resmi menggantikan Aventador sebagai model flagship Lamborghini, menandai era baru bagi supercar Italia ini.</p>
+                        <button>SPESIFIKASI</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section bg-black">
+        <div class="container">
+            <div class="collection-header">
+                <h2>KOLEKSI</h2>
+                <button>
+                    LIHAT SEMUA
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <div class="collection-grid">
+                <div class="hover-scale">
+                    <img src="gt3rs 600.png" alt="Porsche GT3 RS">
+                </div>
+                <div class="hover-scale">
+                    <img src="Lamborghini_Aventador_600x400.png" alt="Lamborghini Aventador">
+                </div>
+                <div class="hover-scale">
+                    <img src="Mclaren_Senna_600x400.png" alt="McLaren Senna">
+                </div>
+                <div class="hover-scale">
+                    <img src="McLaren_P1_GTR_2015_600x400.png" alt="McLaren P1 GTR">
+                </div>
+                <div class="hover-scale">
+                    <img src="Porsche_600x400.png" alt="Classic Porsche">
+                </div>
+                <div class="hover-scale">
+                    <img src="Porsche_Boxster_600x400.png" alt="Porsche Boxster">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section bg-gradient-right">
+        <div class="container">
+            <h2 class="section-title">PENGALAMAN EKSKLUSIF ANDA</h2>
+            <div class="exclusive-section-content">
+                <div class="contact">
+                    <h2>Hubungi Kami</h2>
+                    <form id="contactForm">
+                        <input type="text" id="name" name="name" placeholder="Nama" required />
+                        <input type="email" id="email" name="email" placeholder="Email" required />
+                        <textarea id="message" name="message" rows="5" placeholder="Pesan Kamu" required></textarea>
+                        <button type="submit">Kirim Pesan</button>
+                    </form>
+                    <p id="formMessage"></p>
+                </div>
+                <div class="exclusive-info">
+                    <h3>TEMUKAN SHOWROOM TERDEKAT ANDA</h3>
+                    <p>Kunjungi dealer resmi Exclusive Automotive untuk merasakan model kami secara langsung dan berbicara dengan spesialis produk kami tentang opsi penyesuaian, pembiayaan, dan program kepemilikan.</p>
+                    <div class="exclusive-features">
+                        <div>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Jaringan Internasional</span>
+                        </div>
+                        <div>
+                            <i class="fas fa-cogs"></i>
+                            <span>Kustomisasi Lengkap</span>
+                        </div>
+                        <div>
+                            <i class="fas fa-trophy"></i>
+                            <span>Manfaat Kepemilikan Eksklusif</span>
+                        </div>
+                    </div>
+                    <button class="exclusive-btn-showroom">LOKASI SHOWROOM</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>PRODUK</h4>
+                    <ul>
+                        <li><a href="#">Lamborghini</a></li>
+                        <li><a href="#">Mclaren</a></li>
+                        <li><a href="#">Porsche</a></li>
+                        <li><a href="#">Limited Editions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>KEPEMILIKAN</h4>
+                    <ul>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Garansi</a></li>
+                        <li><a href="#">Spare Parts</a></li>
+                        <li><a href="#">Layanan Keuangan</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>MOTORSPORT</h4>
+                    <ul>
+                        <li><a href="#">GT3</a></li>
+                        <li><a href="#">Super Trofeo</a></li>
+                        <li><a href="#">GT2</a></li>
+                        <li><a href="#">Driving Academy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>PERUSAHAAN</h4>
+                    <ul>
+                        <li><a href="#">Tentang Kami</a></li>
+                        <li><a href="#">Karier</a></li>
+                        <li><a href="#">Keberlanjutan</a></li>
+                        <li><a href="#">Kontak</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <span>EXCLUSIVE</span> AUTOMOTIVE
+                    </div>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-copyright">
+                    <div>© 2025 Exclusive Automotive. All Rights Reserved.</div>
+                    <div class="footer-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Use</a>
+                        <a href="#">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Fallback video
+        const video = document.querySelector('.hero-video');
+        if (video) {
+            video.addEventListener('error', function() {
+                this.parentNode.innerHTML = `
+                    <div class="hero-content" style="background: linear-gradient(to bottom, #000, #111827);">
+                        <h2 style="font-size: 2.25rem; font-weight: 700;">EXCLUSIVE AUTOMOTIVE</h2>
+                    </div>`;
+            });
+        }
+
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+            if (name && email && message) {
+                const whatsappMessage = `Name: ${name}%0AEmail: ${email}%0AMessage: ${message}`;
+                const whatsappURL = `https://wa.me/+6285842363036?text=${whatsappMessage}`;
+                window.open(whatsappURL, '_blank');
+                document.getElementById('formMessage').textContent = 'Redirecting to WhatsApp...';
+                document.getElementById('formMessage').style.color = 'green';
+                this.reset();
+            } else {
+                document.getElementById('formMessage').textContent = 'Please fill in all fields.';
+                document.getElementById('formMessage').style.color = 'red';
+            }
+        });
+    </script>
+</body>
+</html>
+
+
