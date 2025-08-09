@@ -167,3 +167,94 @@ document.addEventListener('DOMContentLoaded', () => {
     setupContactForm();
     setupMobileMenu();
 });
+
+const showrooms = [
+            {
+                name: "Showroom Purwokerto",
+                lat: -7.43454,
+                lng: 109.24372
+            },
+            {
+                name: "Showroom Jakarta Pusat",
+                lat: -6.186486,
+                lng: 106.834091
+            },
+            {
+                name: "Showroom Bandung",
+                lat: -6.914744,
+                lng: 107.609810
+            },
+            {
+                name: "Showroom Yogyakarta",
+                lat: -7.801194,
+                lng: 110.364917
+            }
+        ];
+
+        // Fungsi Haversine untuk hitung jarak antar koordinat
+        function hitungJarak(lat1, lng1, lat2, lng2) {
+            const R = 6371; // Radius bumi dalam km
+            const dLat = toRad(lat2 - lat1);
+            const dLon = toRad(lng2 - lng1);
+            const a =
+                Math.sin(dLat / 2) ** 2 +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLon / 2) ** 2;
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                return R * c;
+        }
+
+        function toRad(value) {
+            return (value * Math.PI) / 180;
+        }  
+
+        // Fungsi utama
+        function cariShowroomTerdekat() {
+            const mapsContainer = document.getElementById('maps-container');
+            const mapsFrame = document.getElementById('maps-frame');
+            const directionsLink = document.getElementById('directions-link');
+            const errorMsg = document.getElementById('error-msg');
+            const showroomName = document.getElementById('showroom-name');
+
+    if (!navigator.geolocation) {
+        errorMsg.textContent = "Browser Anda tidak mendukung geolokasi.";
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const userLat = pos.coords.latitude;
+      const userLng = pos.coords.longitude;
+
+        // Cari showroom terdekat
+        let nearest = null;
+        let minDistance = Infinity;
+
+            for (const showroom of showrooms) {
+                const jarak = hitungJarak(userLat, userLng, showroom.lat, showroom.lng);
+                    if (jarak < minDistance) {
+                    minDistance = jarak;
+                    nearest = showroom;
+                    }
+            }
+
+                    if (nearest) {
+                    showroomName.textContent = nearest.name;
+
+                        const embedURL = `https://maps.google.com/maps?q=${encodeURIComponent(nearest.name)}@${nearest.lat},${nearest.lng}&z=15&output=embed`;
+                        mapsFrame.src = embedURL;
+
+                        const directionURL = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${nearest.lat},${nearest.lng}&travelmode=driving`;
+                        directionsLink.href = directionURL;
+
+                        mapsContainer.style.display = "block";
+                        errorMsg.textContent = "";
+                    } else {
+                        errorMsg.textContent = "Tidak ada showroom ditemukan.";
+                     }
+    },
+            (err) => {
+                errorMsg.textContent = "Tidak dapat mengakses lokasi. Izinkan akses lokasi pada browser Anda.";
+            }
+    );
+        }

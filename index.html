@@ -105,7 +105,7 @@
             <h2 class="section-title">PEFORMA HEWAN BUAS</h2>
             <div class="performance-grid">
                 <div>
-                    <img src="revuelto.png" alt="Revuelto engine">
+                    <img src="revuelto.png" alt="Revuelto engine" style=" width: 100%;">
                 </div>
                 <div class="specs-info">
                     <div class="specs-grid">
@@ -199,7 +199,14 @@
                             <span>Manfaat Kepemilikan Eksklusif</span>
                         </div>
                     </div>
-                    <button class="exclusive-btn-showroom">LOKASI SHOWROOM</button>
+                    <button class="exclusive-btn-showroom" onclick="cariShowroomTerdekat()">LOKASI SHOWROOM</button>
+                    <div id="maps-container" class="maps-container hidden">
+                        <h2 id="showroom-name"></h2>
+                        <iframe id="maps-frame" class="maps" loading="lazy" allowfullscreen></iframe>
+                        <p><a id="directions-link" href="#" target="_blank"></a></p>
+                    </div>
+
+                    <p id="error-msg" class="error-msg"></p>
                 </div>
             </div>
         </div>
