@@ -829,3 +829,79 @@ form#contactForm button:hover {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
+
+/* Specs Modal (Floating Page) */
+.specs-modal-content {
+    max-width: 960px;
+    width: 92%;
+    border: 1px solid #333;
+    background: #0b0b0b;
+    animation: slideUp .25s ease-out;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .close-specs {
+    position: absolute;
+    right: 18px;
+    top: 12px;
+    background: transparent;
+    color: #aaa;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    transition: color .2s ease;
+  }
+  .close-specs:hover { color: #ffcc00; }
+  
+  .specs-modal-body {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  
+  .specs-section {
+    border: 1px solid #1f2937;
+    border-radius: 10px;
+    padding: 16px;
+    background: rgba(255,255,255,.02);
+  }
+  .specs-section h3 {
+    font-size: 1.125rem;
+    margin-bottom: 10px;
+    color: white;
+  }
+  .specs-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,.03);
+    border-radius: 8px;
+  }
+  .spec-key {
+    color: #aaa;
+  }
+  .spec-val {
+    color: #fff;
+    font-weight: 600;
+    text-align: right;
+    max-width: 60%;
+  }
+  
+  @media (min-width: 768px) {
+    .specs-modal-body { grid-template-columns: 1fr 1fr; }
+  }
+  

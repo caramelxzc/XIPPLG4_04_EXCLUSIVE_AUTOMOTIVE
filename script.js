@@ -350,3 +350,72 @@ document.addEventListener("DOMContentLoaded", () => {
   setupMobileMenu();
   injectModalStyles();
 });
+
+
+// ====== Data Spesifikasi ======
+const revueltoSpecs = {
+  "Powertrain": [
+    ["Konfigurasi", "V12 + motor listrik"],
+    ["Tenaga Maksimum", "1000 HP"],
+    ["Transmisi", "DCT 8-percepatan"]
+  ],
+  "Performa": [
+    ["0–100 km/j", "2.5 detik"],
+    ["Kecepatan Puncak", "350 km/j"]
+  ],
+  "Dimensi": [
+    ["Panjang", "4.95 m"],
+    ["Lebar", "2.03 m"],
+    ["Tinggi", "1.16 m"]
+  ]
+};
+
+// ====== Builder HTML ======
+function buildSpecsHTML(specs) {
+  return Object.entries(specs).map(([section, rows]) => `
+    <div class="specs-section">
+      <h3>${section}</h3>
+      <div class="specs-grid">
+        ${rows.map(([k,v]) => `
+          <div class="spec-row">
+            <div class="spec-key">${k}</div>
+            <div class="spec-val">${v}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ====== Setup Modal ======
+function setupSpecsModal() {
+  const modal = document.getElementById('specsModal');
+  const openBtn = document.getElementById('openSpecsBtn');
+  const closeBtn = document.querySelector('.close-specs');
+  const container = document.getElementById('specsContainer');
+  if (!modal || !openBtn || !container) return;
+
+  // Isi konten spesifikasi
+  container.innerHTML = buildSpecsHTML(revueltoSpecs);
+
+  const open = () => {
+    modal.style.display = 'block';
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+  const close = () => {
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = 'auto';
+  };
+
+  openBtn.addEventListener('click', open);
+  closeBtn?.addEventListener('click', close);
+  window.addEventListener('click', (e) => { if (e.target === modal) close(); });
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+}
+
+// Panggil saat DOM siap
+document.addEventListener("DOMContentLoaded", () => {
+  setupSpecsModal();
+});
