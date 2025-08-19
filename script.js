@@ -419,3 +419,154 @@ function setupSpecsModal() {
 document.addEventListener("DOMContentLoaded", () => {
   setupSpecsModal();
 });
+
+// ====== Data Spesifikasi Semua Model ======
+const specsData = {
+  "Lamborghini Revuelto": {
+    "Powertrain": [
+      ["Konfigurasi", "V12 + motor listrik"],
+      ["Tenaga Maksimum", "1000 HP"],
+      ["Transmisi", "DCT 8-percepatan"]
+    ],
+    "Performa": [
+      ["0–100 km/j", "2.5 detik"],
+      ["Kecepatan Puncak", "350 km/j"]
+    ],
+    "Dimensi": [
+      ["Panjang", "4.95 m"],
+      ["Lebar", "2.03 m"],
+      ["Tinggi", "1.16 m"]
+    ]
+  },
+  "Lamborghini Huracan EVO": {
+    "Powertrain": [
+      ["Konfigurasi", "V10"],
+      ["Tenaga Maksimum", "640 HP"],
+      ["Transmisi", "DCT 7-percepatan"]
+    ],
+    "Performa": [
+      ["0–100 km/j", "2.9 detik"],
+      ["Kecepatan Puncak", "325 km/j"]
+    ],
+    "Dimensi": [
+      ["Panjang", "4.52 m"],
+      ["Lebar", "1.93 m"],
+      ["Tinggi", "1.16 m"]
+    ]
+  }
+  // Tambahkan spesifikasi model lain di sini...
+};
+
+// ====== Builder HTML Spesifikasi ======
+function buildSpecsHTML(specs) {
+  return Object.entries(specs).map(([section, rows]) => `
+    <div class="specs-section">
+      <h3>${section}</h3>
+      <div class="specs-grid">
+        ${rows.map(([k,v]) => `
+          <div class="spec-row">
+            <div class="spec-key">${k}</div>
+            <div class="spec-val">${v}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ====== Render Models dengan tombol Spesifikasi ======
+function renderModelsWithSpecs(models) {
+  return models
+    .map((model) => {
+      const mediaHtml = model.image
+        ? `<div class="model-media"><img src="${model.image}" alt="${model.name}" class="model-image" /></div>`
+        : `<div class="model-media model-image placeholder"><span>No Image</span></div>`;
+
+      return `
+      <div class="model-card">
+        ${mediaHtml}
+        <div class="model-info">
+          <h3 class="model-name">${model.name}</h3>
+          <div class="model-price">${model.price}</div>
+          <div class="model-specs">
+            ${model.specs
+              .map((s) => `<span class="spec-item">${s}</span>`)
+              .join("")}
+          </div>
+          <p class="model-description">${model.description}</p>
+          <button 
+            class="model-btn spec-btn"
+            data-model="${model.name}"
+          >
+            SPESIFIKASI
+          </button>
+        </div>
+      </div>`;
+    })
+    .join("");
+}
+
+// ====== Setup Modal Spesifikasi Dinamis ======
+function setupSpecsModal() {
+  const modal = document.getElementById('specsModal');
+  const container = document.getElementById('specsContainer');
+  const closeBtn = document.querySelector('.close-specs');
+  if (!modal || !container) return;
+
+  const open = (modelName) => {
+    const specs = specsData[modelName];
+    if (!specs) {
+      container.innerHTML = `<p>Tidak ada data spesifikasi untuk ${modelName}</p>`;
+    } else {
+      container.innerHTML = buildSpecsHTML(specs);
+    }
+    modal.style.display = 'block';
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  };
+  const close = () => {
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = 'auto';
+  };
+
+  // Delegasi event ke semua tombol spesifikasi
+  document.body.addEventListener("click", (e) => {
+    if (e.target.classList.contains("spec-btn")) {
+      const modelName = e.target.dataset.model;
+      open(modelName);
+    }
+  });
+
+  closeBtn?.addEventListener('click', close);
+  window.addEventListener('click', (e) => { if (e.target === modal) close(); });
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+}
+
+// ====== Ubah tombol utama SPESIFIKASI di section Revuelto ======
+function setupHeroSpecsButton() {
+  const openSpecsBtn = document.getElementById("openSpecsBtn");
+  const modelsModal = document.getElementById("modelsModal");
+  const title = modelsModal.querySelector("h2");
+  const modelsContainer = modelsModal.querySelector(".models-container");
+
+  if (!openSpecsBtn) return;
+
+  openSpecsBtn.addEventListener("click", () => {
+    if (title) title.textContent = "Top Selling Models - Spesifikasi";
+    modelsContainer.innerHTML = renderModelsWithSpecs(topSellingModels);
+    modelsModal.style.display = "block";
+    document.body.style.overflow = "hidden";
+  });
+}
+
+// ====== Init ======
+document.addEventListener("DOMContentLoaded", () => {
+  setupVideoFallback();
+  setupContactForm();
+  setupModelsModal();
+  setupMobileMenu();
+  injectModalStyles();
+  setupSpecsModal();
+  setupHeroSpecsButton();
+});
